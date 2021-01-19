@@ -1,0 +1,60 @@
+    /*
+    * Ultrasonic Sensor HC-SR04 and Arduino Tutorial
+    *
+    * by Dejan Nedelkovski,
+    * www.HowToMechatronics.com
+    *
+    */
+    // defines pins numbers
+    const int trigPin = 9;
+    const int echoPin = 10;
+    // defines variables
+    long duration;
+    int distance;
+int sensePin = A0;  //This is the Arduino Pin that will read the sensor output
+int sensorInput;    //The variable we will use to store the sensor input
+double temp;  
+    void setup() {
+    pinMode(13,OUTPUT);
+    pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+    pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+    Serial.begin(9600);
+  sensorInput = analogRead(A0);    //read the analog sensor and store it
+  temp = (double)sensorInput / 1024;       //find percentage of input reading
+  temp = temp * 5;                 //multiply by 5V to get voltage
+  temp = temp - 0.5;               //Subtract the offset 
+  temp = temp * 100;// Starts the serial communication
+    }
+    void loop() {
+    // Clears the trigPin
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    // Sets the trigPin on HIGH state for 10 micro seconds
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    // Reads the echoPin, returns the sound wave travel time in microseconds
+    duration = pulseIn(echoPin, HIGH);
+      sensorInput = analogRead(A0);    //read the analog sensor and store it
+  temp = (double)sensorInput / 1024;       //find percentage of input reading
+  temp = temp * 5;                 //multiply by 5V to get voltage
+  temp = temp - 0.5;               //Subtract the offset 
+  temp = temp * 100;               //Convert to degrees 
+ 
+  Serial.print("Current Temperature: ");
+  Serial.println(temp);
+    // Calculating the distance
+    distance= duration*0.034/2;
+      if(distance<100)
+      {
+        digitalWrite(13,HIGH);
+      }
+      else
+      {digitalWrite(13,LOW);
+      }
+      
+    // Prints the distance on the Serial Monitor
+    Serial.print("Distance: ");
+    Serial.println(distance);
+    }
+    
